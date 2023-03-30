@@ -1,15 +1,22 @@
 @extends('layout.master')
 
 @section('title', 'Halaman Fakulltas')
-@section('subtitle', '')
+@section('subtitle', 'Fakultas')
 @section('content')
-<h2>Fakultas</h2>
+<h1>Fakultas</h1>
 {{-- <p>Ini halaman fakultas</p> --}}
 {{-- {{ $fikr }} --}}
-<ul>
+<table class="table table-hover">
+       <thead>
+              <tr>
+                   <th>Nama Fakultas</th>
+              </tr>
+       </thead>
+       <tbody>
 @foreach ($datafakultas as $item)
-       <li>  {{ $item }}  </li>
+       <tr><td>  {{ $item }}  </td></tr>
     
 @endforeach
-</ul>
+       </tbody>
+</table>
 @endsection

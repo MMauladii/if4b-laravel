@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProdiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,3 +37,4 @@ Route::get('/fakultas', function(){
     return view('fakultas.index') ->with('datafakultas', ['FIKR', 'FEB']);
 });
 
+Route::get('prodi', [ProdiController::class, 'index'])->name('prodi');
