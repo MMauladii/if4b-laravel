@@ -3,7 +3,7 @@
 @section('title', 'Halaman Fakulltas')
 @section('subtitle', 'Fakultas')
 @section('content')
-<h1>Fakultas</h1>
+
 {{-- <p>Ini halaman fakultas</p> --}}
 {{-- {{ $fikr }} --}}
 <table class="table table-hover">
