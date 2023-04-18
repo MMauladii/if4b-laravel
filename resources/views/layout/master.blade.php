@@ -9,7 +9,6 @@
 </head>
 <body class="bg-success">
   <div class="container-fluid">
-    <h1 class="bg-danger">Universitas MDP</h1>
     <h1 class="bg-primary">@yield('subtitle')</h1>
     <hr>
     @yield('content')
