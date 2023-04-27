@@ -1,6 +1,6 @@
 @extends('layout.master')
 @section('title', 'Progra, Studi')
-@section('subtitle', 'Halaman Program Studi')
+@section('subtitle', 'Program Studi')
 
 @section('content')
     <h1>Ini halaman program studi</h1>

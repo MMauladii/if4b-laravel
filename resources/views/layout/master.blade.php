@@ -9,7 +9,7 @@
 </head>
 <body class="bg-success">
   <div class="container-fluid">
-    <h1 class="bg-primary">@yield('subtitle')</h1>
+    <h1 class="bg-primary text-center">@yield('subtitle')</h1>
     <hr>
     @yield('content')
     <hr>
