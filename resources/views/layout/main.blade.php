@@ -73,7 +73,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{url('mahasiswas')}}">
+            <a class="nav-link" href="{{url('mahasiswa')}}">
               <i class="mdi mdi mdi-account-card-details menu-icon"></i>
               <span class="menu-title">Mahasiswa</span>
 
