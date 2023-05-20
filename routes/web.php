@@ -43,3 +43,4 @@ Route::get('/dosen/index', function(){
 Route::resource('fakultas', FakultasController::class);
 Route::resource('prodi', ProdiController::class);
 Route::resource('mahasiswa', MahasiswaController::class);
+Route::post('/posts/multi-delete', [PostsController::class, 'multiDelete'])->name('mhs-multi-delete');
