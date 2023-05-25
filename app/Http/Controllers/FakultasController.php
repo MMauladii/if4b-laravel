@@ -17,7 +17,7 @@ class FakultasController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource. 
+     * Show the form for creating a new resource.
      */
     public function create()
     {
@@ -29,23 +29,25 @@ class FakultasController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request);
-        //dd($request->nama_fakultas);
+        // dd($request);
+        // dd($request->nama_wakil_dekan);
+
+        // validasi data
         $validasi = $request->validate([
             'nama_fakultas' => 'required',
             'nama_dekan' => 'required',
             'nama_wakil_dekan' => 'required'
         ]);
+        // dd($validasi);
 
-        //dd($validasi);
-
+        // buat objek dari model Fakultas
         $fakultas = new Fakultas();
         $fakultas->nama_fakultas = $validasi['nama_fakultas'];
         $fakultas->nama_dekan = $validasi['nama_dekan'];
         $fakultas->nama_wakil_dekan = $validasi['nama_wakil_dekan'];
-        $fakultas->save();
+        $fakultas->save(); // simpan
 
-        return redirect()->route('fakultas.index')->with('success', "Data fakultas".$validasi ['nama_fakultas']." Berhasil disimpan");
+        return redirect()->route('fakultas.index')->with('success', "Data fakultas ".$validasi['nama_fakultas']." berhasil disimpan");
     }
 
     /**
