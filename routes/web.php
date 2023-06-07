@@ -39,8 +39,8 @@ Route::get('/dosen/index', function(){
     //return view('fakultas.index') ->with('datafakultas', ['FIKR', 'FEB']);
 //});
 
-
-Route::resource('fakultas', FakultasController::class);
 Route::resource('prodi', ProdiController::class);
+Route::resource('fakultas', FakultasController::class);
 Route::resource('mahasiswa', MahasiswaController::class);
-Route::post('/posts/multi-delete', [PostsController::class, 'multiDelete'])->name('mhs-multi-delete');
+
+Route::post('mhs-multi-delete', [MahasiswaController::class, 'multiDelete'])->name('mhs-multi-delete');

@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\mahasiswa;
-use GuzzleHttp\Client;
+use App\Models\Mahasiswa;
 use App\Models\Prodi;
-use App\Models\Mahasiswas;
 use Illuminate\Http\Request;
 
 class MahasiswaController extends Controller
@@ -13,10 +11,16 @@ class MahasiswaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = Mahasiswa::all(); 
-        return view('mahasiswas.index')->with('mahasiswas',$data);
+        $keyword = $request->query('search');
+        if($keyword){
+            $mahasiswa = Mahasiswa::where('nama', 'LIKE', '%' . $keyword . '%')->paginate(10);
+        } else {
+            $mahasiswa = Mahasiswa::paginate(10);
+        }
+
+        return view('mahasiswa.index')->with('mahasiswas', $mahasiswa);
     }
 
     /**
@@ -25,7 +29,7 @@ class MahasiswaController extends Controller
     public function create()
     {
         $prodi = Prodi::orderBy('nama_prodi', 'ASC')->get();
-        return view('mahasiswas.create', compact('prodi'));
+        return view('mahasiswa.create')->with('prodi', $prodi);
     }
 
     /**
@@ -34,39 +38,36 @@ class MahasiswaController extends Controller
     public function store(Request $request)
     {
         $validasi = $request->validate([
-          'foto' =>'required|file|image|max:5000',
-          'npm' =>'required|unique:mahasiswas,npm',
-          'nama' =>'required',
-          'tanggal_lahir' =>'required',
-          'kota_lahir'=>'required',
-          "prodi_id" =>'required'
-      ]);
+            'npm' => 'required|unique:mahasiswas',
+            'nama' => 'required',
+            'kota_lahir' => 'required',
+            'tanggal' => 'required',
+            'prodi_id' => 'required',
+            'foto' => 'required|file|image'
+        ]);
+        $mahasiswa = new Mahasiswa();
+        $mahasiswa->npm = $validasi['npm'];
+        $mahasiswa->nama = $validasi['nama'];
+        $mahasiswa->kota_lahir = $validasi['kota_lahir'];
+        $mahasiswa->tanggal = $validasi['tanggal'];
+        $mahasiswa->prodi_id = $validasi['prodi_id'];
 
-      $temp = $request->foto->getClientOriginalExtension();
-      $nama_foto = $validasi['npm'] . '.' . $temp;
-     $path = $request->foto->storeAs('public/images', $nama_foto);
-    
-     
-      // dd($validasi);
-      $mahasiswa = new Mahasiswa();
-      $mahasiswa->foto =$nama_foto;
-      $mahasiswa->npm = $validasi['npm'];
-      $mahasiswa->nama = $validasi['nama'];
-      $mahasiswa->tanggal_lahir = $validasi['tanggal_lahir'];
-      $mahasiswa->kota_lahir = $validasi['kota_lahir'];
-      $mahasiswa->prodi_id = $validasi['prodi_id'];
-      $mahasiswa->save();
-     
+        // upload foto
+        $ext = $request->foto->getClientOriginalExtension();
+        $new_filename = $validasi['npm'].".".$ext;
+        $request->foto->storeAs('public', $new_filename);
 
+        $mahasiswa->foto = $new_filename;
+        $mahasiswa->save(); // simpan
 
-      return redirect()->route('mahasiswa.index')->with('success',"Data ".$validasi['nama']. " berhasil disimpan");
-  }
+        return redirect()->route('mahasiswa.index')->with('success', "Data mahasiswa " . $validasi['nama'] . " berhasil disimpan");
 
+    }
 
     /**
      * Display the specified resource.
      */
-    public function show(mahasiswa $mahasiswa)
+    public function show(Mahasiswa $mahasiswa)
     {
         //
     }
@@ -74,33 +75,58 @@ class MahasiswaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(mahasiswa $mahasiswa)
+    public function edit(Mahasiswa $mahasiswa)
     {
-        //
+        $prodi = Prodi::orderBy('nama_prodi', 'ASC')->get();
+        return view('mahasiswa.edit')->with('mahasiswa' , $mahasiswa)->with('prodi', $prodi);
     }
+
+    
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, mahasiswa $mahasiswa)
+    public function update(Request $request, Mahasiswa $mahasiswa)
     {
-        //
+        $validasi = $request->validate([
+            'nama' => 'required',
+            'kota_lahir' => 'required',
+            'tanggal' => 'required',
+            'prodi_id' => 'required',
+            'foto' => 'required|file|image'
+        ]);
+        $mahasiswa->npm = $mahasiswa->npm;
+        $mahasiswa->nama = $validasi['nama'];
+        $mahasiswa->kota_lahir = $validasi['kota_lahir'];
+        $mahasiswa->tanggal = $validasi['tanggal'];
+        $mahasiswa->prodi_id = $validasi['prodi_id'];
+
+        // upload foto
+        $ext = $request->foto->getClientOriginalExtension();
+        $new_filename = $mahasiswa->npm.".".$ext;
+        $request->foto->storeAs('public', $new_filename);
+
+        $mahasiswa->foto = $new_filename;
+        $mahasiswa->save(); // simpan
+
+        return redirect()->route('mahasiswa.index')->with('success', "Data mahasiswa " . $validasi['nama'] . " berhasil disimpan");
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(mahasiswa $mahasiswa)
+    public function destroy(Mahasiswa $mahasiswa)
     {
-        //dd($mahasiswa);
+        // dd($mahasiswa);
         $mahasiswa->delete();
-        return redirect()->route('mahasiswa.index')->with('success', 'Data berhasil dihapus');
+        //return redirect()->route('mahasiswa.index')->with('success', 'Data berhasil dihapus');
+        return response("data Mahasiswa Berhasil di hapus", 200);
     }
-    public function multiDelete(Request $request)
-    {
-        Mahasiswa::whereIn('id', $request->get('selected'))->delete
-        ();
 
-        return response("Selected mahasiswa (s) deleted.", 200);
+    public function multiDelete(Request $request) 
+    {
+        Mahasiswa::whereIn('id', $request->get('selected'))->delete();
+
+        return response("Selected mahasiswa(s) deleted successfully.", 200);
     }
 }
