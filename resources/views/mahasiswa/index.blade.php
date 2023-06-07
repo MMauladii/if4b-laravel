@@ -13,9 +13,14 @@
                 </div>
             @endif
             <h4 class="card-title">Mahasiswa</h4>
-            <div class="d-flex justify-content-between mt-3">                   
+            <div class="d-flex justify-content-between mt-3">
+                <form class="col-lg-6 rounded border-info border d-flex" method="GET">
+                    <input type="text" name="search" class="form-control" placeholder="">
+                </form>
+                <div>
                 <a href="{{ route('mahasiswa.create') }}" class="btn btn-secondary btn-rounded">Tambah</a>
                 </div>
+            </div>
             <div class="table-responsive">
             <table class="table table-striped table-hover" id="posts-table">
                 <thead>
@@ -61,6 +66,9 @@
             <div class="d-flex justify-content-end mt-3">
             <button class="btn btn-danger btn-rounded" id="multi-delete" data-route="{{ route('mhs-multi-delete') }}">Delete All Selected</button>
             </div>
+            <div class="mt-4">
+                {{$mahasiswas -> withQueryString()->links('pagination::bootstrap-5')}}
+           </div>
             </div>
 
         </div>

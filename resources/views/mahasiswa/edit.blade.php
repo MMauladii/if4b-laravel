@@ -66,7 +66,7 @@
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary me-2">Simpan</button>
-                    <a href="{{ route('mahasiswa.index') }}" class="btn btn-light">Batal</a>
+                    <a href="{{ route('mahasiswa.index') }}" class="btn btn-light">Batalkan</a>
                   </form>
                 </div>
               </div>
